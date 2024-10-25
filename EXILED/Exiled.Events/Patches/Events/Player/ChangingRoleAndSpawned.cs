@@ -58,11 +58,11 @@ namespace Exiled.Events.Patches.Events.Player
                     new(OpCodes.Call, PropertyGetter(typeof(PlayerRoleManager), nameof(PlayerRoleManager.Hub))),
                     new(OpCodes.Call, Method(typeof(API.Features.Player), nameof(API.Features.Player.Get), new[] { typeof(ReferenceHub) })),
                     new(OpCodes.Stloc_S, player.LocalIndex),
-                    
+
                     // if (player == null) return;
                     new CodeInstruction(OpCodes.Ldloc_S, player.LocalIndex),
                     new CodeInstruction(OpCodes.Brfalse_S, returnLabel),
-                    
+
                     // if (Player.IsVerified)
                     //  goto jmp
                     new(OpCodes.Ldloc_S, player.LocalIndex),
