@@ -160,6 +160,7 @@ namespace Exiled.Events.Patches.Events.Player
                     //     return;
                     new CodeInstruction(OpCodes.Ldloc_S, player.LocalIndex),
                     new CodeInstruction(OpCodes.Brfalse_S, returnLabel),
+
                     // if (player.ReferenceHub == null)
                     //     return;
                     new CodeInstruction(OpCodes.Ldloc_S, player.LocalIndex),
