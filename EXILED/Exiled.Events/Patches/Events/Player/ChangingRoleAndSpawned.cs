@@ -167,6 +167,11 @@ namespace Exiled.Events.Patches.Events.Player
                     new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(API.Features.Player), nameof(API.Features.Player.ReferenceHub))),
                     new CodeInstruction(OpCodes.Brfalse_S, returnLabel),
 
+                    // if (player.ReferenceHub == null)
+                    //     return;
+                    new CodeInstruction(OpCodes.Call, PropertyGetter(typeof(ReferenceHub), nameof(ReferenceHub.LocalHub))),
+                    new CodeInstruction(OpCodes.Brfalse_S, returnLabel),
+
                     // if (player.ReferenceHub == ReferenceHub.LocalHub)
                     //     goto skip;
                     new(OpCodes.Ldloc_S, player.LocalIndex),
