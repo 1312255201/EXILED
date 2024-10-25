@@ -156,14 +156,15 @@ namespace Exiled.Events.Patches.Events.Player
                 newInstructions.Count - 1,
                 new[]
                 {
-                    // 确保 player 不是 null
+                    // if (player == null)
+                    //     return;
                     new CodeInstruction(OpCodes.Ldloc_S, player.LocalIndex),
-                    new CodeInstruction(OpCodes.Brfalse_S, returnLabel), // 如果 player 是 null，返回
-
-                    // 确保 ReferenceHub 不是 null
+                    new CodeInstruction(OpCodes.Brfalse_S, returnLabel),
+                    // if (player.ReferenceHub == null)
+                    //     return;
                     new CodeInstruction(OpCodes.Ldloc_S, player.LocalIndex),
                     new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(API.Features.Player), nameof(API.Features.Player.ReferenceHub))),
-                    new CodeInstruction(OpCodes.Brfalse_S, returnLabel), // 如果 ReferenceHub 是 null，返回
+                    new CodeInstruction(OpCodes.Brfalse_S, returnLabel),
 
                     // if (player.ReferenceHub == ReferenceHub.LocalHub)
                     //     goto skip;
