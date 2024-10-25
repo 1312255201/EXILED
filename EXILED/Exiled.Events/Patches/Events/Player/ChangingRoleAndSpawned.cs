@@ -45,6 +45,7 @@ namespace Exiled.Events.Patches.Events.Player
             Label continueLabel = generator.DefineLabel();
             Label jmp = generator.DefineLabel();
             Label skip = generator.DefineLabel();
+            Label nothing = generator.DefineLabel();
 
             LocalBuilder changingRoleEventArgs = generator.DeclareLocal(typeof(ChangingRoleEventArgs));
             LocalBuilder player = generator.DeclareLocal(typeof(API.Features.Player));
@@ -157,20 +158,20 @@ namespace Exiled.Events.Patches.Events.Player
                 new[]
                 {
                     // if (player == null)
-                    //     goto skip;
+                    //     goto nothing;
                     new CodeInstruction(OpCodes.Ldloc_S, player.LocalIndex),
-                    new(OpCodes.Brtrue_S, skip),
+                    new(OpCodes.Brtrue_S, nothing),
 
                     // if (player.ReferenceHub == null)
-                    //     goto skip;
+                    //     goto nothing;
                     new CodeInstruction(OpCodes.Ldloc_S, player.LocalIndex),
                     new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(API.Features.Player), nameof(API.Features.Player.ReferenceHub))),
-                    new(OpCodes.Brtrue_S, skip),
+                    new(OpCodes.Brtrue_S, nothing),
 
                     // if (ReferenceHub.LocalHub == null)
-                    //     goto skip;
+                    //     goto nothing;
                     new CodeInstruction(OpCodes.Call, PropertyGetter(typeof(ReferenceHub), nameof(ReferenceHub.LocalHub))),
-                    new(OpCodes.Brtrue_S, skip),
+                    new(OpCodes.Brtrue_S, nothing),
 
                     // if (player.ReferenceHub == ReferenceHub.LocalHub)
                     //     goto skip;
@@ -180,6 +181,8 @@ namespace Exiled.Events.Patches.Events.Player
                     new(OpCodes.Call, Method(typeof(ReferenceHub), "op_Equality")),
                     new(OpCodes.Brtrue_S, skip),
 
+                    new CodeInstruction(OpCodes.Nop).WithLabels(nothing),
+                    
                     // player
                     new(OpCodes.Ldloc_S, player.LocalIndex),
 
