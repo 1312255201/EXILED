@@ -182,7 +182,7 @@ namespace Exiled.Events.Patches.Events.Player
                     new(OpCodes.Brtrue_S, skip),
 
                     new CodeInstruction(OpCodes.Nop).WithLabels(nothing),
-                    
+
                     // player
                     new(OpCodes.Ldloc_S, player.LocalIndex),
 
